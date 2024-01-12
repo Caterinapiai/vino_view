@@ -9,9 +9,8 @@ from fastapi import FastAPI, Query, HTTPException
 from fastapi.responses import JSONResponse
 from datetime import datetime
 import pandas as pd
-from typing import Tuple
-from .mymodules.utils import top_wines_by_rating, wines_by_least_recent_year, wines_by_recent_year, filter_wines 
-
+import numpy as np
+from .mymodules.utils import *
 
 app = FastAPI()
 
@@ -42,11 +41,11 @@ def get_most_rated_wines(limit: int = 10):
     top_wines_dict = top_wines_by_rating(df_wines, limit).to_dict(orient='records')
     return JSONResponse(content=top_wines_dict)
 
-
 @app.get('/most-recent-wines')
 def get_most_recent_wines(limit: int = 10):
     """
     Endpoint to get the best reviewed wines.
+    
     Parameters:
         limit: (optional) an integer representing the max number of wines that has to be returned
     Returns:
@@ -54,6 +53,19 @@ def get_most_recent_wines(limit: int = 10):
     """
     most_recent_wine = wines_by_recent_year(df_wines, limit).to_dict(orient='records')
     return JSONResponse(content=most_recent_wine)
+
+@app.get('/years-range')
+def get_years_range():
+     years_range = years_in_wines(df_wines)
+
+     return JSONResponse(content=years_range)
+
+@app.get('/num-ratings-max-value') # MAX numero recensioni dei vini 
+
+@app.get('/countries')
+
+@app.get('/types')
+
 
 @app.get('/least-recent-wines')
 def get_least_recent_year(limit: int = 10):
@@ -67,14 +79,16 @@ def get_least_recent_year(limit: int = 10):
     least_recent_wines = wines_by_least_recent_year(df_wines, limit).to_dict(orient='records')
     return JSONResponse(content=least_recent_wines) 
 
+
 @app.get('/advanced-search')
 def advanced_search_wines(
+    name: str = Query(None),
     type: str = Query(None),
     country: str = Query(None),
     region: str = Query(None),
     winery: str = Query(None),
     rating: float = Query(None),
-    num_ratings: int = Query(None),
+    num_ratings: int = Query(None), # RESTITUIRE ARROTONDAMENTI A INTERO
     price: float = Query(None),
     year_start: int = Query(None),
     year_end: int = Query(None),
@@ -98,6 +112,7 @@ def advanced_search_wines(
         dict: Wines matching the specified criteria.
     """
     filters = {
+        "name": name,
         "type": type,
         "country": country,
         "region": region,
