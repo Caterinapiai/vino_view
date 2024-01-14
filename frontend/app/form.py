@@ -1,12 +1,20 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, StringField, IntegerField, FloatField, validators
+from wtforms import (
+    SelectField,
+    SubmitField,
+    StringField,
+    IntegerField,
+    FloatField,
+    validators
+)
 from countries import COUNTRIES, DEFAULT_COUNTRY_CHOICE
 from wine_types import TYPES, DEFAULT_TYPE_CHOICE
 import datetime
 
+
 class SearchWinesForm(FlaskForm):
      name = StringField(
-         label="Wine name...", 
+         label="Wine name...",
          render_kw={"placeholder": "Wine name..."}
      )
 
