@@ -5,7 +5,7 @@ This module defines a FastAPI application that serves
 as the backend for the project.
 """
 
-from fastapi import FastAPI, Query, HTTPException 
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.responses import JSONResponse
 from datetime import datetime
 import pandas as pd
@@ -29,7 +29,7 @@ df_wines.columns = map(str.lower, df_wines.columns)
 df_wines['year'] = pd.to_numeric(
     df_wines['year'],
     errors='coerce'
-    ).astype('Int64')
+).astype('Int64')
 
 print(type(df_wines['price']))
 
@@ -56,7 +56,7 @@ def get_most_rated_wines(limit: int = 10):
 def get_most_recent_wines(limit: int = 10):
     """
     Endpoint to get most recent wines.
-    
+
     Parameters:
         limit: (optional) an integer representing the
                 max number of wines that has to be returned
@@ -66,7 +66,7 @@ def get_most_recent_wines(limit: int = 10):
     most_recent_wine = wines_by_recent_year(
         df_wines,
         limit
-        ).to_dict(orient='records')
+    ).to_dict(orient='records')
     return JSONResponse(content=most_recent_wine)
 
 
@@ -74,7 +74,7 @@ def get_most_recent_wines(limit: int = 10):
 def get_least_recent_year(limit: int = 10):
     """
     Endpoint to get older wines.
-    
+
     Parameters:
         limit: (optional) an integer representing
                 the max number of wines that has to be returned
@@ -84,7 +84,7 @@ def get_least_recent_year(limit: int = 10):
     least_recent_wines = wines_by_least_recent_year(
         df_wines,
         limit
-        ).to_dict(orient='records')
+    ).to_dict(orient='records')
     return JSONResponse(content=least_recent_wines)
 
 
@@ -130,7 +130,7 @@ def advanced_search_wines(
         price (optional): Wine price.
         year (optional): Wine year.
         limit (optional): Max number of wines to return.
-        
+
     Returns:
         dict: Wines matching the specified criteria.
     """
@@ -175,5 +175,5 @@ def read_root():
         "description": ("This API provides information about "
                         "different types of wines.")
     }
-    
+
     return JSONResponse(content=info)

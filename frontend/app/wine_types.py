@@ -1,8 +1,8 @@
 DEFAULT_TYPE_CHOICE = "Select type..."
 
 TYPES = [
-     "white",
-     "rose",
-     "red",
-     "sparkling",
- ] 
+    "white",
+    "rose",
+    "red",
+    "sparkling",
+]
