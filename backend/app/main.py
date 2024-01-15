@@ -11,6 +11,7 @@ from datetime import datetime
 import pandas as pd
 from .mymodules.utils import *
 
+
 app = FastAPI()
 
 df_red = pd.read_csv('/app/app/datasets/Red.csv')
@@ -25,7 +26,9 @@ df_white["type"] = "white"
 
 df_wines = pd.concat([df_red, df_rose, df_sparkling, df_white])
 df_wines.columns = map(str.lower, df_wines.columns)
-df_wines['year'] = pd.to_numeric(df_wines['year'], errors='coerce').astype('Int64')
+df_wines['year'] = pd.to_numeric(df_wines['year'], errors='coerce')
+df_wines['year'] = df_wines['year'].astype('Int64')
+
 
 @app.get('/top-wines')
 def get_most_rated_wines(limit: int = 10):
@@ -33,13 +36,17 @@ def get_most_rated_wines(limit: int = 10):
      Endpoint to get the best reviewed wines.
 
     Parameters:
-        limit: (optional) an integer representing the max number of wines that has to be returned
-
+        limit: (optional) an integer representing the
+                max number of wines that has to be returned
     Returns:
-        dict: top wines sorted by rating (descending)
+        dict:   top wines sorted by rating (descending)
     """
-    top_wines_dict = top_wines_by_rating(df_wines, limit).to_dict(orient='records')
+    top_wines_dict = top_wines_by_rating(
+        df_wines,
+        limit
+    ).to_dict(orient='records')
     return JSONResponse(content=top_wines_dict)
+
 
 @app.get('/most-recent-wines')
 def get_most_recent_wines(limit: int = 10):
@@ -47,17 +54,21 @@ def get_most_recent_wines(limit: int = 10):
     Endpoint to get the best reviewed wines.
     
     Parameters:
-        limit: (optional) an integer representing the max number of wines that has to be returned
+        limit: (optional) an integer representing the
+                max number of wines that has to be returned
     Returns:
         dict: top wines sorted by rating (descending)
     """
-    most_recent_wine = wines_by_recent_year(df_wines, limit).to_dict(orient='records')
+    most_recent_wine = wines_by_recent_year(
+        df_wines,
+        limit
+        ).to_dict(orient='records')
     return JSONResponse(content=most_recent_wine)
+
 
 @app.get('/years-range')
 def get_years_range():
      years_range = years_in_wines(df_wines)
-
      return JSONResponse(content=years_range)
 
 
@@ -66,10 +77,12 @@ def get_num_ratings_max_value():
      num_ratings_max_value = max_number_of_ratings(df_wines)
      return JSONResponse(content=num_ratings_max_value)
 
+
 @app.get('/countries')
 def get_countries():
      countries = countries_df(df_wines)
      return JSONResponse(content=countries)
+
 
 @app.get('/types')
 def get_types():
@@ -81,13 +94,19 @@ def get_types():
 def get_least_recent_year(limit: int = 10):
     """
     Endpoint to get the best reviewed wines.
+    
     Parameters:
-        limit: (optional) an integer representing the max number of wines that has to be returned
+        limit: (optional) an integer representing
+                the max number of wines that has to be returned
     Returns:
         dict: top wines sorted by rating (descending)
     """
-    least_recent_wines = wines_by_least_recent_year(df_wines, limit).to_dict(orient='records')
-    return JSONResponse(content=least_recent_wines) 
+    least_recent_wines = wines_by_least_recent_year(
+        df_wines,
+        limit
+        ).to_dict(orient='records')
+    return JSONResponse(content=least_recent_wines)
+
 
 @app.get('/advanced-search')
 def advanced_search_wines(
@@ -96,19 +115,14 @@ def advanced_search_wines(
     country: str = Query(None),
     region: str = Query(None),
     winery: str = Query(None),
-    # ----- 
-     rating_start: float = Query(None),
-     rating_end: float = Query(None),
-     # -----
-     num_ratings_start: int = Query(None), 
-     num_ratings_end: int = Query(None),
-     # -----
-     price_start: float = Query(None),
-     price_end: float = Query(None),
-     # -----
+    rating_start: float = Query(None),
+    rating_end: float = Query(None),
+    num_ratings_start: int = Query(None),
+    num_ratings_end: int = Query(None),
+    price_start: float = Query(None),
+    price_end: float = Query(None),
     year_start: int = Query(None),
     year_end: int = Query(None),
-
     limit: int = Query(10),
 ):
     """
@@ -134,16 +148,29 @@ def advanced_search_wines(
         "country": country,
         "region": region,
         "winery": winery,
-        "rating": (rating_start, rating_end) if rating_start is not None and rating_end is not None else None,
-        "numberofratings": (num_ratings_start, num_ratings_end) if num_ratings_start is not None and num_ratings_end is not None else None,
-        "price": (price_start, price_end) if price_start is not None and price_end is not None else None,
-        "year": (year_start, year_end) if year_start is not None and year_end is not None else None,
+        "rating": (
+            rating_start, rating_end
+        ) if rating_start and rating_end else None,
+        "numberofratings": (
+            num_ratings_start, num_ratings_end
+        ) if num_ratings_start and num_ratings_end else None,
+        "price": (
+            price_start, price_end
+        ) if price_start and price_end else None,
+        "year": (
+            year_start, year_end
+        ) if year_start and year_end else None,
     }
-    result = filter_wines(df_wines, filters).head(limit).to_dict(orient='records')
+
+    result = filter_wines(
+        df_wines,
+        filters
+    ).head(limit).to_dict(orient='records')
 
     print("RESULT", result)
 
     return JSONResponse(content=result)
+
 
 @app.get('/')
 def read_root():
@@ -155,7 +182,8 @@ def read_root():
     """
     info = {
         "message": "Welcome to the Wine API!",
-        "description": "This API provides information about different types of wines.",
+        "description": ("This API provides information about "
+                        "different types of wines."),
         "endpoints": {
             "/top-wines": "Get the best-reviewed wines.",
             "/most-recent-wines": "Get the most recently reviewed wines.",
@@ -163,8 +191,8 @@ def read_root():
             "/get-date": "Get the current date."
         }
     }
+    
     return JSONResponse(content=info)
-
 
 
 @app.get('/get-date')
