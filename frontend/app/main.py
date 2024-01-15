@@ -63,49 +63,49 @@ def advanced_search():
 
         url = f'{BACKEND_HOST}advanced-search?limit=24&'
 
-    if name != "":
-       url += f'name={name}&'
- 
-    if type != DEFAULT_TYPE_CHOICE:
-         url += f'type={type}&'
-
-         if country != DEFAULT_COUNTRY_CHOICE:
-             url += f'country={country}&'
-
-         if year_start is None:
-             year_start = 1500
-
-         if year_end is None:
-             year_end = datetime.date.today().year
-
-         if rating_start is None:
-             rating_start = 0.0
-
-         if rating_end is None:
-             rating_end = 5.0
-
-         if price_start is None:
-             price_start = 0
-
-         if price_end is None:
-             price_end = MAX_WINE_PRICE
-
-         url += f'year_start={year_start}&year_end={year_end}&'
-         url += f'rating_start={rating_start}&rating_end={rating_end}&'
-         url += f'price_start={price_start}&price_end={price_end}&'
+        if name != "":
+            url += f'name={name}&'
     
-    response = requests.get(url)
+        if type != DEFAULT_TYPE_CHOICE:
+            url += f'type={type}&'
 
-    if response.status_code == 200:
-            data = response.json()
-            return render_template(
-                'advanced-search.html',
-                form=form,
-                result=data,
-                error_message=error_message
-            )
-    else:
-            error_message = f'Error: Unable to fetch data from FastAPI Backend'
+            if country != DEFAULT_COUNTRY_CHOICE:
+                url += f'country={country}&'
+
+            if year_start is None:
+                year_start = 1500
+
+            if year_end is None:
+                year_end = datetime.date.today().year
+
+            if rating_start is None:
+                rating_start = 0.0
+
+            if rating_end is None:
+                rating_end = 5.0
+
+            if price_start is None:
+                price_start = 0
+
+            if price_end is None:
+                price_end = MAX_WINE_PRICE
+
+            url += f'year_start={year_start}&year_end={year_end}&'
+            url += f'rating_start={rating_start}&rating_end={rating_end}&'
+            url += f'price_start={price_start}&price_end={price_end}&'
+        
+        response = requests.get(url)
+
+        if response.status_code == 200:
+                data = response.json()
+                return render_template(
+                    'advanced-search.html',
+                    form=form,
+                    result=data,
+                    error_message=error_message
+                )
+        else:
+                error_message = f'Error: Unable to fetch data from FastAPI Backend'
 
     return render_template(
         'advanced-search.html',
