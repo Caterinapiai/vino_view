@@ -33,4 +33,5 @@ def filter_range(df, column, min_value, max_value):
          pd.DataFrame: Filtered DataFrame containing only rows where the
          specified column's values fall within the specified range.
      """
+     print("ecco a te", min_value, max_value)
      return df[(df[column] >= min_value) & (df[column] <= max_value)]

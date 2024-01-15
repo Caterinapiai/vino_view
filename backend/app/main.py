@@ -31,6 +31,8 @@ df_wines['year'] = pd.to_numeric(
     errors='coerce'
     ).astype('Int64')
 
+print(type(df_wines['price']))
+
 
 @app.get('/top-wines')
 def get_most_rated_wines(limit: int = 10):
@@ -53,13 +55,13 @@ def get_most_rated_wines(limit: int = 10):
 @app.get('/most-recent-wines')
 def get_most_recent_wines(limit: int = 10):
     """
-    Endpoint to get the best reviewed wines.
+    Endpoint to get most recent wines.
     
     Parameters:
         limit: (optional) an integer representing the
                 max number of wines that has to be returned
     Returns:
-        dict: top wines sorted by rating (descending)
+        dict: wines sorted by year from newest to oldest
     """
     most_recent_wine = wines_by_recent_year(
         df_wines,
@@ -68,34 +70,34 @@ def get_most_recent_wines(limit: int = 10):
     return JSONResponse(content=most_recent_wine)
 
 
-@app.get('/countries')
-def get_countries():
-     countries = countries_df(df_wines)
-     return JSONResponse(content=countries)
-
-
-@app.get('/types')
-def get_types():
-     types = types_df(df_wines)
-     return JSONResponse(content=types)
-
-
 @app.get('/least-recent-wines')
 def get_least_recent_year(limit: int = 10):
     """
-    Endpoint to get the best reviewed wines.
+    Endpoint to get older wines.
     
     Parameters:
         limit: (optional) an integer representing
                 the max number of wines that has to be returned
     Returns:
-        dict: top wines sorted by rating (descending)
+        dict: wines sorted by year from oldest to newest
     """
     least_recent_wines = wines_by_least_recent_year(
         df_wines,
         limit
         ).to_dict(orient='records')
     return JSONResponse(content=least_recent_wines)
+
+
+@app.get('/countries')
+def get_countries():
+    countries = countries_df(df_wines)
+    return JSONResponse(content=countries)
+
+
+@app.get('/types')
+def get_types():
+    types = types_df(df_wines)
+    return JSONResponse(content=types)
 
 
 @app.get('/advanced-search')
@@ -140,24 +142,22 @@ def advanced_search_wines(
         "winery": winery,
         "rating": (
             rating_start, rating_end
-        ) if rating_start and rating_end else None,
+        ) if (rating_start is not None) and rating_end else None,
         "numberofratings": (
             num_ratings_start, num_ratings_end
-        ) if num_ratings_start and num_ratings_end else None,
+        ) if (num_ratings_start is not None) and num_ratings_end else None,
         "price": (
             price_start, price_end
-        ) if price_start and price_end else None,
+        ) if (price_start is not None) and price_end else None,
         "year": (
             year_start, year_end
-        ) if year_start and year_end else None,
+        ) if (year_start is not None) and year_end else None,
     }
 
     result = filter_wines(
         df_wines,
         filters
     ).head(limit).to_dict(orient='records')
-
-    print("RESULT", result)
 
     return JSONResponse(content=result)
 
