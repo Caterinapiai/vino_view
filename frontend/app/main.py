@@ -28,14 +28,14 @@ def index():
 
     Returns:
         str: Rendered HTML content for the index page.
-    """   
+    """
 
     return render_template(
-         'index.html',
-         top_wines=fetch_top_wines(6),
-         most_recent_wines=fetch_most_recent_wines(6), 
-         least_recent_wines=fetch_least_recent_wines(6)
-     )
+        'index.html',
+        top_wines=fetch_top_wines(6),
+        most_recent_wines=fetch_most_recent_wines(6),
+        least_recent_wines=fetch_least_recent_wines(6)
+    )
 
 
 @app.route('/advanced-search', methods=['GET', 'POST'])
@@ -65,7 +65,7 @@ def advanced_search():
 
         if name != "":
             url += f'name={name}&'
-    
+
         if type != DEFAULT_TYPE_CHOICE:
             url += f'type={type}&'
 
@@ -93,19 +93,19 @@ def advanced_search():
             url += f'year_start={year_start}&year_end={year_end}&'
             url += f'rating_start={rating_start}&rating_end={rating_end}&'
             url += f'price_start={price_start}&price_end={price_end}&'
-        
+
         response = requests.get(url)
 
         if response.status_code == 200:
-                data = response.json()
-                return render_template(
-                    'advanced-search.html',
-                    form=form,
-                    result=data,
-                    error_message=error_message
-                )
+            data = response.json()
+            return render_template(
+                'advanced-search.html',
+                form=form,
+                result=data,
+                error_message=error_message
+            )
         else:
-                error_message = f'Error: Unable to fetch data from FastAPI Backend'
+            error_message = f'Error: Unable to fetch data from FastAPI Backend'
 
     return render_template(
         'advanced-search.html',

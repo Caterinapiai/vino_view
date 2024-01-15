@@ -54,55 +54,55 @@ def wines_by_least_recent_year(df_wines, limit=10):
 
 
 def countries_df(df_wines):
-     """
-     Extract unique countries from the 'country' column.
+    """
+    Extract unique countries from the 'country' column.
 
-     Parameters:
-         - df_wines (pd.DataFrame): DataFrame containing wine information.
+    Parameters:
+        - df_wines (pd.DataFrame): DataFrame containing wine information.
 
-     Returns:
-         - list: List of unique countries.
-     """
-     countries = df_wines['country'].astype(str).unique()
-     return countries.tolist()
+    Returns:
+        - list: List of unique countries.
+    """
+    countries = df_wines['country'].astype(str).unique()
+    return countries.tolist()
 
 
 def types_df(df_wines):
-     """
-     Extract unique wine types from the 'type' column.
+    """
+    Extract unique wine types from the 'type' column.
 
-     Parameters:
-         - df_wines (pd.DataFrame): DataFrame containing wine information.
+    Parameters:
+        - df_wines (pd.DataFrame): DataFrame containing wine information.
 
-     Returns:
-         - list: List of unique wine types.
-     """
-     types = df_wines['type'].astype(str).unique()
-     return types.tolist()
+    Returns:
+        - list: List of unique wine types.
+    """
+    types = df_wines['type'].astype(str).unique()
+    return types.tolist()
 
 
 def filter_wines(df_wines, filters):
-     """
-     Filter wines based on specified criteria.
+    """
+    Filter wines based on specified criteria.
 
-     Parameters:
-        - df_wines (pd.DataFrame): DataFrame containing wine information.
-        - filters (dict): Dictionary of filters to apply to the DataFrame.
+    Parameters:
+       - df_wines (pd.DataFrame): DataFrame containing wine information.
+       - filters (dict): Dictionary of filters to apply to the DataFrame.
 
-     Returns:
-        - pd.DataFrame: Filtered DataFrame containing wines
-        that match the specified criteria.
-     """
-     for column, value in filters.items():
-         if value and column in df_wines.columns:
+    Returns:
+       - pd.DataFrame: Filtered DataFrame containing wines
+       that match the specified criteria.
+    """
+    for column, value in filters.items():
+        if value and column in df_wines.columns:
             if (
                 column == 'year' or
                 column == 'price' or
                 column == 'numberofratings' or
                 column == 'rating' and None not in value
             ):
-                df_wines = filter_range(df_wines, column, *value)             
+                df_wines = filter_range(df_wines, column, *value)
             else:
                 df_wines = filter_contains(df_wines, column, value)
 
-     return df_wines
+    return df_wines

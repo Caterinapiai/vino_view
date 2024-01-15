@@ -29,52 +29,53 @@ class SearchWinesForm(FlaskForm):
         submit (SubmitField): Submit button for initiating the wine search.
 
     Note:
-        This form includes various fields for specifying search criteria such as
-        name, type, country, production year range, rating range, and price range.
-        Each field is appropriately configured with placeholders, validation constraints,
-        and default choices where applicable.
+        This form includes various fields for specifying search
+        criteria such as name, type, country, production year range,
+        rating range, and price range.
+        Each field is appropriately configured with placeholders,
+        validation constraints, and default choices where applicable.
     """
 
     name = StringField(
-         label="Wine name...",
-         render_kw={"placeholder": "Wine name..."}
-     )
+        label="Wine name...",
+        render_kw={"placeholder": "Wine name..."}
+    )
 
     type = SelectField(choices=[DEFAULT_TYPE_CHOICE] + TYPES)
     country = SelectField(choices=[DEFAULT_COUNTRY_CHOICE] + COUNTRIES)
 
     year_start = IntegerField("Min Year", render_kw={
-         "placeholder": "Min Year",
-         "min": 0,
-         "max": datetime.date.today().year,
-     }, validators=[validators.Optional()])
+        "placeholder": "Min Year",
+        "min": 0,
+        "max": datetime.date.today().year,
+    }, validators=[validators.Optional()])
 
     year_end = IntegerField("Min Year", render_kw={
-         "placeholder": "Max Year",
-         "min": 0,
-         "max": datetime.date.today().year
-     }, validators=[validators.Optional()])
+        "placeholder": "Max Year",
+        "min": 0,
+        "max": datetime.date.today().year
+    }, validators=[validators.Optional()])
 
     rating_start = FloatField("Min Rating", render_kw={
-         "placeholder": "Min Rating",
-         "min": 0,
-         "max": 5
-     }, validators=[validators.Optional()])
+        "placeholder": "Min Rating",
+        "min": 0,
+        "max": 5
+    }, validators=[validators.Optional()])
 
     rating_end = FloatField("Max Rating", render_kw={
-         "placeholder": "Max Rating",
-         "min": 0,
-         "max": 5
-     }, validators=[validators.Optional()])
+        "placeholder": "Max Rating",
+        "min": 0,
+        "max": 5
+    }, validators=[validators.Optional()])
 
     price_start = FloatField("Min Price", render_kw={
-         "placeholder": "Min Price",
-         "min": 0,
-     }, validators=[validators.Optional()])
+        "placeholder": "Min Price",
+        "min": 0,
+    }, validators=[validators.Optional()])
 
     price_end = FloatField("Max Price", render_kw={
-         "placeholder": "Max Price",
-         "min": 0,
-     }, validators=[validators.Optional()])
+        "placeholder": "Max Price",
+        "min": 0,
+    }, validators=[validators.Optional()])
 
     submit = SubmitField('Search Wines!')
