@@ -93,7 +93,6 @@ def filter_wines(df_wines, filters):
         - pd.DataFrame: Filtered DataFrame containing wines
         that match the specified criteria.
      """
-     filtered_wines = df_wines.copy()
      for column, value in filters.items():
          if value and column in df_wines.columns:
             if (
@@ -102,8 +101,8 @@ def filter_wines(df_wines, filters):
                 column == 'numberofratings' or
                 column == 'rating' and None not in value
             ):
-                 filtered_wines = filter_range(filtered_wines, column, *value)              
+                df_wines = filter_range(df_wines, column, *value)             
             else:
-                 filtered_wines = filter_contains(filtered_wines, column, value)
+                df_wines = filter_contains(df_wines, column, value)
 
-         return filtered_wines
+     return df_wines
