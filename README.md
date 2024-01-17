@@ -32,7 +32,7 @@ The project follows a client-server architecture:
     Simplifies the deployment and management of the entire application.
 
 ## Usage
-First of all, make sure you have Docker, docker-compose and git installed on your sistem.
+First of all, make sure you have Docker, docker-compose and git installed on your system.
 
 1. Clone the repository and navigate in the directory
 
