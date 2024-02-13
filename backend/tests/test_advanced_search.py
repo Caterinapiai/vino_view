@@ -11,6 +11,10 @@ client = TestClient(app)
 
 
 def test_advanced_search_wines_by_type():
+    """
+    Test the "/advanced-search" endpoint
+    with test parameters to search wines by type.
+    """
     response = client.get("/advanced-search", params={
         "limit": 5,
         "type": "red"
@@ -25,6 +29,10 @@ def test_advanced_search_wines_by_type():
 
 
 def test_advanced_search_wines_by_year():
+    """
+    Test the "/advanced-search" endpoint
+    with test parameters to search wines by year range.
+    """
     response = client.get("/advanced-search", params={
         "limit": 5,
         "year_start": 2012,
