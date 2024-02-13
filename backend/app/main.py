@@ -90,12 +90,26 @@ def get_least_recent_year(limit: int = 10):
 
 @app.get('/countries')
 def get_countries():
+    """
+    Endpoint that returns the list of all the
+    unique countries that appear in the dataset.
+
+    Returns:
+        list: all the unique countries in the dataset
+    """
     countries = countries_df(df_wines)
     return JSONResponse(content=countries)
 
 
 @app.get('/types')
 def get_types():
+    """
+    Endpoint that returns the list of all the
+    unique wine types that appear in the dataset.
+    
+    Returns:
+        list: all the unique wine types in the dataset
+    """
     types = types_df(df_wines)
     return JSONResponse(content=types)
 
