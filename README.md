@@ -9,6 +9,9 @@ VinoView is a webapp built with Python, Flask, FastAPI and Docker that allows yo
 - Veronica Farinazzo
 - Giulia Magrin
 
+## Datasets
+You can find the csv files (Red.csv, Rose.csv, Sparkling.csv, White.csv) in the following link: https://www.kaggle.com/datasets/budnyak/wine-rating-and-price 
+
 ## Architecture
 
 The project follows a client-server architecture:
